@@ -1,7 +1,23 @@
-// app/_layout.tsx
+import { Stack } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
+import { ActivityIndicator, View } from 'react-native';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 
-export default function Layout() {
+function ProtectedLayout() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (!user) {
+    return <Stack />;
+  }
+
   return (
     <Drawer>
       <Drawer.Screen name="index" options={{ title: 'Inicio' }} />
@@ -10,5 +26,13 @@ export default function Layout() {
       <Drawer.Screen name="recetas" options={{ title: 'Recetas' }} />
       <Drawer.Screen name="cuenta" options={{ title: 'Mi Cuenta' }} />
     </Drawer>
+  );
+}
+
+export default function LayoutWrapper() {
+  return (
+    <AuthProvider>
+      <ProtectedLayout />
+    </AuthProvider>
   );
 }

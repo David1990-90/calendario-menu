@@ -29,4 +29,5 @@ export const globalStyles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
+
 });
